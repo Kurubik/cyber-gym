@@ -71,7 +71,7 @@ without being rewritten class by class. Reduced motion is respected globally.
 | Fonts (computed) | same | `IBM Plex Sans` + `JetBrains Mono` loaded, `cyrillicRendered: true` |
 | Overflow | same, 8 routes × {390, 1440} | no horizontal overflow anywhere |
 | Reduced motion | same | animation/transition ≈ 0 |
-| Android build | `ANDROID_HOME=/opt/android-sdk ./android/gradlew -p android assembleDebug` | see §6 |
+| Android build | `ANDROID_HOME=/opt/android-sdk npx cap sync android && JAVA_HOME=<jdk21> ./android/gradlew -p android assembleDebug` | **BUILD SUCCESSFUL** — `app-debug.apk` (30 MB), package `com.kurubik.cybergym.test`, versionName `0.1.0`, minSdk 23, target/compileSdk 35 |
 | iOS | static: `App/Info.plist`, `project.pbxproj`, asset catalogs | `Cyber Gym`, `com.kurubik.cybergym`, `0.1.0`, icons/splash present |
 
 Screenshots (fresh, from the built app, 390 px + 1440 px): `assets/screenshots/` —
@@ -84,10 +84,17 @@ Screenshots (fresh, from the built app, 390 px + 1440 px): `assets/screenshots/`
   "CyberGymTest"), launcher/adaptive/splash icons regenerated, version `0.1.0`.
 - iOS: display name "Cyber Gym", bundle id `com.kurubik.cybergym`, camera permission string in
   Russian, app icon + splash regenerated.
-- Android `assembleDebug` requires the Gradle/AGP toolchain **and** the Capacitor plugin sources
-  (`android/capacitor-cordova-android-plugins`, `node_modules` sync). The outcome of the run
-  performed here is recorded in the delivery message; anything that could not be produced on
-  this host is called out there rather than claimed.
+- Android `assembleDebug` was run on this host. Three blockers had to be cleared first, all of them
+  environment, not code: `cap sync android` had never run (so
+  `android/capacitor-cordova-android-plugins/` did not exist), `platforms;android-35` was only a
+  partial directory, and the Capacitor 7 plugins want a Java 21 toolchain while the host had 17.
+  After `npx cap sync android`, `sdkmanager "platforms;android-35"` and installing
+  `openjdk-21-jdk-headless`, the build succeeded and the APK reports the new identity:
+  `package: name='com.kurubik.cybergym.test'` (the `.test` suffix is the debug variant, by
+  design), `versionName='0.1.0'`, `compileSdkVersion='35'`, label `CyberGymTest` (the debug label
+  overlay; the release label is "Cyber Gym").
+- No release APK was signed, and the iOS side was validated statically only — there is no macOS
+  toolchain on this host.
 
 ## 7. Branding scrub and legal allowlist
 
