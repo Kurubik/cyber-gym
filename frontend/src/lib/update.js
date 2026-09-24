@@ -27,14 +27,14 @@ function compareSemver(a, b) {
 }
 
 /**
- * Checks the GitLab releases API for a newer version.
+ * Checks the GitHub releases API for a newer version.
  * Returns { hasUpdate, latestVersion, apkUrl, hashUrl } or throws on network failure.
  *   - hasUpdate: true if the latest release tag is newer than the running build
  *   - latestVersion: the semver string of the latest release (without "v" prefix)
  *   - apkUrl: direct download URL of the first .apk asset, or null
  *   - hashUrl: direct download URL of the .apk.sha256 hash file, or null
  */
-// One request per app session: Settings is opened often, gitlab.com does not need to hear
+// One request per app session: Settings is opened often, the API does not need to hear
 // about it every time. The promise is cached, a failure is not.
 let cached = null
 export function resetUpdateCheck() { cached = null }
