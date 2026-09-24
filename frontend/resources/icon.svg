@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 512 512">
+  <!-- App-icon source. Same geometry as assets/logo.svg so the native app, the home-screen
+       PWA and the website favicon all show the same mark. -->
+  <rect width="512" height="512" fill="#04060D"/>
+  <path d="M98 40 H414 L472 98 V414 L414 472 H98 L40 414 V98 Z" fill="none" stroke="#00E5FF" stroke-opacity=".35" stroke-width="5"/>
+  <g fill="#00E5FF">
+    <rect x="92" y="246" width="328" height="20"/>
+    <rect x="92" y="200" width="30" height="112"/>
+    <rect x="128" y="220" width="20" height="72"/>
+    <rect x="390" y="200" width="30" height="112"/>
+    <rect x="364" y="220" width="20" height="72"/>
+    <rect x="154" y="238" width="12" height="36"/>
+    <rect x="346" y="238" width="12" height="36"/>
+  </g>
+  <path d="M244 228 H268 L284 244 V268 L268 284 H244 L228 268 V244 Z" fill="#FF2BD6"/>
+  <rect x="198" y="292" width="116" height="6" fill="#FFB000"/>
+</svg>

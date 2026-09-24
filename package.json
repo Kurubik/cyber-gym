@@ -1,0 +1,9 @@
+{
+  "name": "cyber-gym",
+  "version": "0.1.0",
+  "private": true,
+  "license": "AGPL-3.0-or-later",
+  "devDependencies": {
+    "js-yaml": "^4.1.0"
+  }
+}

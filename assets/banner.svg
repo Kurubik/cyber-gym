@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-label="Cyber Gym — Blackwall control system">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#091620" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1280" height="640" fill="#04060D"/>
+  <rect width="1280" height="640" fill="url(#grid)" opacity=".9"/>
+  <g transform="translate(96 128) scale(0.75)">
+    <path d="M98 40 H414 L472 98 V414 L414 472 H98 L40 414 V98 Z" fill="#050812" stroke="#00E5FF" stroke-opacity=".35" stroke-width="5"/>
+    <g fill="#00E5FF">
+      <rect x="92" y="246" width="328" height="20"/>
+      <rect x="92" y="200" width="30" height="112"/>
+      <rect x="128" y="220" width="20" height="72"/>
+      <rect x="390" y="200" width="30" height="112"/>
+      <rect x="364" y="220" width="20" height="72"/>
+      <rect x="154" y="238" width="12" height="36"/>
+      <rect x="346" y="238" width="12" height="36"/>
+    </g>
+    <path d="M244 228 H268 L284 244 V268 L268 284 H244 L228 268 V244 Z" fill="#FF2BD6"/>
+    <rect x="198" y="292" width="116" height="6" fill="#FFB000"/>
+  </g>
+  <g font-family="'DejaVu Sans Mono','Liberation Mono',ui-monospace,monospace" fill="#E8F6FF">
+    <text x="520" y="300" font-size="86" font-weight="700" letter-spacing="4">CYBER<tspan fill="#FF2BD6">//</tspan>GYM</text>
+    <text x="524" y="352" font-size="26" letter-spacing="10" fill="#00E5FF">BLACKWALL CONTROL SYSTEM</text>
+  </g>
+  <rect x="524" y="380" width="560" height="3" fill="#00E5FF"/>
+  <rect x="96" y="520" width="480" height="3" fill="#00E5FF"/>
+</svg>

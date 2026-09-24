@@ -1,0 +1,23 @@
+{
+  "name": "Cyber Gym",
+  "short_name": "Cyber Gym",
+  "description": "Дневник тренировок и веса тела: программы, подходы, рекорды, статистика и ИИ-тренер.",
+  "lang": "ru",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#04060D",
+  "theme_color": "#04060D",
+  "categories": ["health", "fitness", "sports"],
+  "icons": [
+    { "src": "icon-180.png", "sizes": "180x180", "type": "image/png", "purpose": "any" },
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Начать тренировку", "short_name": "Тренировка", "url": "./#/workout" },
+    { "name": "Программа", "short_name": "Программа", "url": "./#/plan" },
+    { "name": "Статистика", "short_name": "Статистика", "url": "./#/stats" }
+  ]
+}

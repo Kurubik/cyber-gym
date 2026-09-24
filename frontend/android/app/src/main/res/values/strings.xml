@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Cyber Gym</string>
+    <string name="title_activity_main">Cyber Gym</string>
+    <string name="package_name">com.kurubik.cybergym</string>
+    <string name="custom_url_scheme">com.kurubik.cybergym</string>
+</resources>

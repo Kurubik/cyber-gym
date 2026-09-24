@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="256" viewBox="0 0 1024 256" role="img" aria-label="CYBER//GYM">
+  <!-- Cyber Gym wordmark. Deliberately drawn as text with a wide mono/sans stack rather than
+       outlined paths: it stays selectable, scales cleanly and needs no licensed font file. -->
+  <rect width="1024" height="256" fill="#04060D"/>
+  <g fill="#E8F6FF" font-family="'DejaVu Sans Mono','Liberation Mono','SFMono-Regular',ui-monospace,monospace"
+     font-size="96" font-weight="700" letter-spacing="6">
+    <text x="48" y="152">CYBER</text>
+    <text x="440" y="152" fill="#FF2BD6">//</text>
+    <text x="596" y="152">GYM</text>
+  </g>
+  <rect x="48" y="184" width="928" height="4" fill="#00E5FF"/>
+  <g fill="#00E5FF" font-family="'DejaVu Sans Mono','Liberation Mono',ui-monospace,monospace" font-size="26" letter-spacing="8">
+    <text x="48" y="228">BLACKWALL CONTROL SYSTEM</text>
+  </g>
+</svg>

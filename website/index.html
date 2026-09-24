@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cyber Gym — дневник тренировок с ИИ-тренером</title>
+<meta name="description" content="Cyber Gym — персональный дневник тренировок и веса тела: программы, подходы, рекорды, статистика и ИИ-тренер. Открытый код, данные на своём сервере.">
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<meta property="og:title" content="Cyber Gym">
+<meta property="og:description" content="Дневник тренировок и веса тела. Программы, рекорды, статистика и ИИ-тренер — на своём сервере.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="banner.svg">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="bar">
+  <a class="brand" href="./"><span class="mark" aria-hidden="true"></span><span class="wordmark">CYBER<i>//</i>GYM</span></a>
+  <nav>
+    <a href="#features">Возможности</a>
+    <a href="#selfhost">Свой сервер</a>
+    <a href="#stack">Устройство</a>
+  </nav>
+  <a class="btn primary" href="https://github.com/Kurubik/cyber-gym">Исходный код</a>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="tele">BLACKWALL CONTROL SYSTEM</p>
+      <h1>Тренировки без хаоса<br>в голове и в блокноте</h1>
+      <p class="lead">
+        Cyber Gym помнит, что ты поднимал в прошлый раз, сколько подходов закрыл и где
+        стоит прогресс. Приложение считает объём и рекорды, показывает карту мышц и
+        умеет собрать программу — если попросишь.
+      </p>
+      <div class="cta">
+        <a class="btn primary" href="https://github.com/Kurubik/cyber-gym">Развернуть у себя</a>
+        <a class="btn" href="https://github.com/Kurubik/cyber-gym/blob/main/README.md">Как это работает</a>
+      </div>
+      <p class="hint">AGPL-3.0 · без телеметрии · данные на твоём сервере</p>
+    </div>
+    <img class="hero-art" src="banner.svg" alt="Cyber Gym — знак и вордмарк CYBER//GYM" width="1280" height="640">
+  </section>
+
+  <section id="features" class="grid">
+    <h2>Что внутри</h2>
+    <div class="cards">
+      <article><h3>Тренировка по ходу</h3><p>Подходы, повторения, вес, время под нагрузкой, кардио, суперсеты, дроп-сеты и рест-пауза. Экран сделан под одну руку.</p></article>
+      <article><h3>Программы и план недели</h3><p>Готовые стартовые планы или свои. Перестановка дней, замена упражнений, копирование программ.</p></article>
+      <article><h3>Статистика, а не угадайка</h3><p>Объём, рекорды, расчётный 1ПМ, прогресс по упражнениям, тепловая карта и карта мышц.</p></article>
+      <article><h3>Дневник веса</h3><p>Взвешивание перед тренировкой, цель и честная кривая вместо самообмана.</p></article>
+      <article><h3>ИИ-тренер</h3><p>Необязательный. Собирает план и разбирает то, что реально записано. Свой ключ или локальная модель.</p></article>
+      <article><h3>Ключи доступа</h3><p>Вход без пароля, синхронизация между устройствами и приложения для Android и iOS.</p></article>
+    </div>
+  </section>
+
+  <section id="selfhost" class="panel">
+    <h2>Свой сервер за пару минут</h2>
+    <p>Один <code>docker compose up -d</code> — и у тебя свой экземпляр: API, веб-клиент и база в одном каталоге.</p>
+    <pre><code>git clone https://github.com/Kurubik/cyber-gym
+cd cyber-gym
+cp .env.example .env   # укажи RP_ID и ORIGIN своего домена
+docker compose up -d</code></pre>
+    <p class="hint">Ключи доступа привязаны к домену: без совпадающих <code>RP_ID</code> и <code>ORIGIN</code> они не сработают. Инструкции по HTTPS и обратному прокси — в репозитории.</p>
+  </section>
+
+  <section id="stack" class="grid">
+    <h2>Из чего собрано</h2>
+    <table>
+      <tr><th>Веб-клиент</th><td>React 19, Vite, Zustand</td></tr>
+      <tr><th>API</th><td>Node без фреймворка, WebAuthn, web-push</td></tr>
+      <tr><th>Приложения</th><td>Capacitor — Android и iOS</td></tr>
+      <tr><th>Хранение</th><td>JSON на профиль, без внешней базы</td></tr>
+      <tr><th>Лицензия</th><td>AGPL-3.0 — производная работа</td></tr>
+    </table>
+  </section>
+</main>
+
+<footer>
+  <span class="wordmark">CYBER<i>//</i>GYM</span>
+  <nav>
+    <a href="https://github.com/Kurubik/cyber-gym">Исходный код</a>
+    <a href="https://github.com/Kurubik/cyber-gym/blob/main/NOTICE.md">Атрибуция</a>
+    <a href="https://github.com/Kurubik/cyber-gym/blob/main/LICENSE">AGPL-3.0</a>
+  </nav>
+</footer>
+</body>
+</html>
