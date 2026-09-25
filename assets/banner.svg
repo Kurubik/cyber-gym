@@ -1,29 +1,48 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-label="Cyber Gym — Blackwall control system">
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="t d">
+  <title id="t">Cyber Gym — DAEMON CRT</title>
+  <desc id="d">Dark oxblood training control terminal with red system rails and cyan telemetry</desc>
   <defs>
-    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M40 0 H0 V40" fill="none" stroke="#091620" stroke-width="1"/>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#3a0712" stroke-width="1" opacity=".55"/>
     </pattern>
+    <pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse">
+      <path d="M0 3.5H1280" stroke="#000" stroke-width="1" opacity=".22"/>
+    </pattern>
+    <linearGradient id="tube" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#18050a"/><stop offset=".48" stop-color="#080204"/><stop offset="1" stop-color="#110308"/>
+    </linearGradient>
+    <filter id="redGlow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
   </defs>
-  <rect width="1280" height="640" fill="#04060D"/>
-  <rect width="1280" height="640" fill="url(#grid)" opacity=".9"/>
-  <g transform="translate(96 128) scale(0.75)">
-    <path d="M98 40 H414 L472 98 V414 L414 472 H98 L40 414 V98 Z" fill="#050812" stroke="#00E5FF" stroke-opacity=".35" stroke-width="5"/>
-    <g fill="#00E5FF">
-      <rect x="92" y="246" width="328" height="20"/>
-      <rect x="92" y="200" width="30" height="112"/>
-      <rect x="128" y="220" width="20" height="72"/>
-      <rect x="390" y="200" width="30" height="112"/>
-      <rect x="364" y="220" width="20" height="72"/>
-      <rect x="154" y="238" width="12" height="36"/>
-      <rect x="346" y="238" width="12" height="36"/>
+  <rect width="1280" height="640" fill="url(#tube)"/>
+  <rect width="1280" height="640" fill="url(#grid)" opacity=".55"/>
+  <g fill="none" stroke="#8b001c" stroke-width="2" opacity=".9">
+    <path d="M24 24h324l22 22h196l18-18h270"/>
+    <path d="M24 616h228l18-18h284l22 18h680"/>
+    <path d="M24 24v592M58 24v142l18 18v250l-18 18v164"/>
+    <path d="M1218 24v82l-18 18v298l18 18v176"/>
+  </g>
+  <g fill="#ff173f">
+    <rect x="18" y="92" width="12" height="46"/><rect x="18" y="149" width="12" height="12"/>
+    <rect x="18" y="482" width="12" height="72"/><rect x="1250" y="76" width="12" height="108"/>
+  </g>
+  <g font-family="'JetBrains Mono','DejaVu Sans Mono',monospace">
+    <text x="108" y="136" fill="#a57f88" font-size="16" letter-spacing="6">TRAINING CONTROL NODE / 09</text>
+    <text x="105" y="278" fill="#eadde0" font-size="86" font-weight="700" letter-spacing="-5">CYBER<tspan fill="#ff173f">//</tspan>GYM</text>
+    <text x="110" y="332" fill="#ff3557" font-size="24" letter-spacing="12">DAEMON CRT</text>
+    <text x="110" y="376" fill="#8c6972" font-size="15" letter-spacing="4">PROTOCOL ACTIVE  ·  LOCAL DATA  ·  ZERO TELEMETRY</text>
+    <path d="M110 407h620" stroke="#a50022" stroke-width="2"/><path d="M110 407h188" stroke="#ff173f" stroke-width="5" filter="url(#redGlow)"/>
+    <g transform="translate(855 128)">
+      <text x="0" y="0" fill="#7df6ff" font-size="13" letter-spacing="3">SYSTEM LOAD</text>
+      <circle cx="116" cy="128" r="92" fill="none" stroke="#47101b" stroke-width="12"/>
+      <path d="M116 36a92 92 0 1 1-80 137" fill="none" stroke="#62dde8" stroke-width="12"/>
+      <text x="76" y="140" fill="#eadde0" font-size="30">78.7</text>
+      <text x="90" y="165" fill="#8c6972" font-size="11" letter-spacing="2">KG</text>
+      <path d="M236 84h146M236 128h146M236 172h146M236 216h146" stroke="#5d1322"/>
+      <path d="M236 198l18-4 16-17 18 10 18-38 18 21 18-56 18 75 22-12" fill="none" stroke="#62dde8" stroke-width="3"/>
+      <g fill="#ff173f"><rect x="236" y="238" width="24" height="18"/><rect x="266" y="228" width="24" height="28"/><rect x="296" y="217" width="24" height="39"/><rect x="326" y="232" width="24" height="24"/><rect x="356" y="207" width="24" height="49"/></g>
     </g>
-    <path d="M244 228 H268 L284 244 V268 L268 284 H244 L228 268 V244 Z" fill="#FF2BD6"/>
-    <rect x="198" y="292" width="116" height="6" fill="#FFB000"/>
+    <text x="108" y="558" fill="#62dde8" font-size="13" letter-spacing="3">SYNC 100%  //  PHOSPHOR STABLE  //  USER SOVEREIGN</text>
+    <text x="1088" y="586" fill="#8c6972" font-size="12">BUILD 0.1.0</text>
   </g>
-  <g font-family="'DejaVu Sans Mono','Liberation Mono',ui-monospace,monospace" fill="#E8F6FF">
-    <text x="520" y="300" font-size="86" font-weight="700" letter-spacing="4">CYBER<tspan fill="#FF2BD6">//</tspan>GYM</text>
-    <text x="524" y="352" font-size="26" letter-spacing="10" fill="#00E5FF">BLACKWALL CONTROL SYSTEM</text>
-  </g>
-  <rect x="524" y="380" width="560" height="3" fill="#00E5FF"/>
-  <rect x="96" y="520" width="480" height="3" fill="#00E5FF"/>
+  <rect width="1280" height="640" fill="url(#scan)" pointer-events="none"/>
 </svg>

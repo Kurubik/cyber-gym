@@ -1,14 +1,36 @@
 # Cyber Gym
 
-![Cyber Gym](assets/banner.svg)
+![Cyber Gym — DAEMON CRT training control system](assets/banner.svg)
 
 **Персональный дневник тренировок и веса тела.** Программы, подходы, повторения, отдых,
 рекорды, статистика и ИИ-тренер — в одном тёмном интерфейсе, который работает как
 приложение на телефоне и как сайт на своём сервере.
 
-> **Blackwall** — так называется дизайн-система Cyber Gym: почти чёрный фон, тонкие
-> бирюзовые линии, рубленые углы и телеметрия моноширинным шрифтом. Светлой темы нет —
-> это осознанное решение, а не недоделка.
+> Две тёмные системы на выбор: **BLACKWALL** — холодная cyan-телеметрия и рубленый HUD;
+> **DAEMON CRT** — строгий oxblood-терминал с красными системными трассами, scanlines и
+> холодными индикаторами данных. Тема переключается в настройках без перезагрузки.
+
+## Интерфейс на телефоне
+
+<p align="center">
+  <img src="assets/screenshots/daemon-home-390.png" width="23%" alt="DAEMON CRT — главный экран">
+  <img src="assets/screenshots/daemon-workout-390.png" width="23%" alt="DAEMON CRT — активная тренировка">
+  <img src="assets/screenshots/daemon-stats-390.png" width="23%" alt="DAEMON CRT — статистика">
+  <img src="assets/screenshots/daemon-settings-390.png" width="23%" alt="DAEMON CRT — выбор темы в настройках">
+</p>
+
+<p align="center"><sub>DAEMON CRT · главный экран · тренировка · статистика · настройки</sub></p>
+
+<details>
+<summary>Посмотреть BLACKWALL</summary>
+
+<p align="center">
+  <img src="assets/screenshots/home-390.png" width="30%" alt="BLACKWALL — главный экран">
+  <img src="assets/screenshots/workout-390.png" width="30%" alt="BLACKWALL — активная тренировка">
+  <img src="assets/screenshots/stats-390.png" width="30%" alt="BLACKWALL — статистика">
+</p>
+
+</details>
 
 ## Что умеет
 
@@ -77,7 +99,7 @@ cd android && ./gradlew assembleDebug    # ANDROID_HOME должен быть в
 ## Тесты и проверка
 
 ```bash
-cd frontend && npm test                  # 126 файлов тестов
+cd frontend && npm test                  # 131 файл тестов
 cd api && npm test                       # node --test
 cd mcp && npm test                       # vitest
 cd frontend && npm run build             # production-сборка
