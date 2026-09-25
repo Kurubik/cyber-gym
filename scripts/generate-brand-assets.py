@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Generates Cyber Gym (Blackwall) brand raster assets.
+"""Generates Cyber Gym brand raster assets.
 
-Original artwork: a chamfered HUD panel containing a stylised barbell, a magenta
-core hub and cyan end plates. Everything is drawn from the same primitives so the
-PWA icon, the native launcher icons, the splash screens and the social banner all
-carry the same mark. Run from the repository root:
+Original artwork: the DAEMON CRT launcher sigil is an angular ``D`` aperture cut
+by a cold telemetry beam inside an oxblood control frame. Everything is drawn from
+the same primitives so the PWA icon, native launcher icons, splash screens and
+repository artwork stay reproducible. Run from the repository root:
 
     python3 scripts/generate-brand-assets.py
 """
@@ -14,12 +14,12 @@ from PIL import Image, ImageDraw, ImageFont
 FONT_MONO_BOLD = '/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf'
 FONT_MONO = '/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf'
 
-BG = (4, 6, 13, 255)
-BG_EL = (9, 16, 24, 255)
-CYAN = (0, 229, 255, 255)
-CYAN_DIM = (0, 229, 255, 90)
-MAGENTA = (255, 43, 214, 255)
-AMBER = (255, 176, 0, 255)
+BG = (8, 2, 4, 255)
+BG_EL = (20, 4, 8, 255)
+RED = (255, 23, 63, 255)
+RED_DIM = (139, 0, 28, 255)
+CYAN = (98, 221, 232, 255)
+TEXT = (234, 221, 224, 255)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -31,7 +31,7 @@ def chamfer(d, box, cut, **kw):
 
 
 def draw_glyph(d, S, cx=256, cy=256, scale=1.0, frame=True):
-    """Draws the mark into a 512-unit coordinate space scaled by S=size/512."""
+    """Draws the DAEMON sigil in a 512-unit coordinate space."""
     def R(v):
         return v * S * scale
 
@@ -43,30 +43,44 @@ def draw_glyph(d, S, cx=256, cy=256, scale=1.0, frame=True):
 
     if frame:
         chamfer(d, [pt(40, 40)[0], pt(40, 40)[1], pt(472, 472)[0], pt(472, 472)[1]],
-                R(58), outline=CYAN_DIM, width=max(1, int(R(5))))
+                R(58), outline=RED_DIM, width=max(1, int(R(6))))
 
-    # barbell bar
-    rect(92, 246, 420, 266, CYAN)
-    # end plates
-    rect(92, 200, 122, 312, CYAN)
-    rect(128, 220, 148, 292, CYAN)
-    rect(390, 200, 420, 312, CYAN)
-    rect(364, 220, 384, 292, CYAN)
-    # collar ticks
-    rect(154, 238, 166, 274, CYAN)
-    rect(346, 238, 358, 274, CYAN)
-    # core hub (magenta, chamfered)
-    chamfer(d, [pt(234, 228)[0], pt(228 - 0, 234)[1], pt(278, 284)[0], pt(284, 278)[1]],
-            R(10), fill=MAGENTA)
-    # scan accent
-    rect(198, 292, 314, 298, AMBER)
+        # Broken circuit rails make the frame read as a control surface, not a badge.
+        d.line([pt(40, 156), pt(68, 156), pt(82, 142), pt(126, 142)],
+               fill=RED, width=max(1, int(R(4))))
+        d.line([pt(386, 370), pt(430, 370), pt(444, 356), pt(472, 356)],
+               fill=RED, width=max(1, int(R(4))))
+
+    # Angular D aperture. It survives Android's circle/squircle masks and remains
+    # identifiable at ldpi, unlike the previous detailed barbell pictogram.
+    outer = [pt(146, 116), pt(302, 116), pt(382, 196), pt(382, 316),
+             pt(302, 396), pt(146, 396)]
+    inner = [pt(208, 180), pt(278, 180), pt(320, 222), pt(320, 290),
+             pt(278, 332), pt(208, 332)]
+    d.polygon(outer, fill=RED)
+    d.polygon(inner, fill=BG_EL)
+
+    # Cold telemetry beam doubles as the training/load axis without reverting to
+    # a cartoon dumbbell. Terminal nodes stay red; cyan is reserved for live data.
+    rect(106, 248, 406, 264, CYAN)
+    rect(106, 224, 132, 288, RED)
+    rect(380, 224, 406, 288, RED)
+    rect(238, 238, 274, 274, TEXT)
+    chamfer(d, [pt(244, 244)[0], pt(244, 244)[1], pt(268, 268)[0], pt(268, 268)[1]],
+            R(5), fill=RED)
+
+    # Three terse status bars; deliberately chunky enough to survive 36 px ldpi.
+    rect(208, 354, 242, 362, RED_DIM)
+    rect(248, 354, 282, 362, RED)
+    rect(288, 354, 322, 362, RED_DIM)
 
 
 def icon(size, maskable=False):
     img = Image.new('RGB', (size, size), BG[:3])
     d = ImageDraw.Draw(img)
     S = size / 512
-    draw_glyph(d, S, scale=0.82 if maskable else 0.92)
+    # Maskable artwork keeps the complete sigil inside Android/PWA safe zones.
+    draw_glyph(d, S, scale=0.78 if maskable else 0.92)
     return img
 
 
@@ -76,9 +90,9 @@ def splash(w, h):
     size = max(64, int(min(w, h) * 0.42))
     mark = icon(size, maskable=True)
     img.paste(mark, ((w - size) // 2, (h - size) // 2))
-    # subtle scanlines
+    # Subtle red phosphor scanlines.
     for y in range(0, h, 5):
-        d.line([(0, y), (w, y)], fill=(0, 60, 80, 255) if y % 15 else (0, 90, 110, 255), width=1)
+        d.line([(0, y), (w, y)], fill=(45, 2, 10, 255) if y % 15 else (72, 3, 16, 255), width=1)
     img.paste(mark, ((w - size) // 2, (h - size) // 2))
     return img
 

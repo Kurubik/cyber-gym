@@ -1,17 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Cyber Gym">
-  <!-- Cyber Gym mark — original artwork. A chamfered HUD frame around a barbell:
-       cyan signal on the plates, a magenta core hub, an amber scan tick. -->
-  <rect width="512" height="512" fill="#04060D"/>
-  <path d="M98 40 H414 L472 98 V414 L414 472 H98 L40 414 V98 Z" fill="none" stroke="#00E5FF" stroke-opacity=".35" stroke-width="5"/>
-  <g fill="#00E5FF">
-    <rect x="92" y="246" width="328" height="20"/>
-    <rect x="92" y="200" width="30" height="112"/>
-    <rect x="128" y="220" width="20" height="72"/>
-    <rect x="390" y="200" width="30" height="112"/>
-    <rect x="364" y="220" width="20" height="72"/>
-    <rect x="154" y="238" width="12" height="36"/>
-    <rect x="346" y="238" width="12" height="36"/>
-  </g>
-  <path d="M244 228 H268 L284 244 V268 L268 284 H244 L228 268 V244 Z" fill="#FF2BD6"/>
-  <rect x="198" y="292" width="116" height="6" fill="#FFB000"/>
+  <!-- Cyber Gym DAEMON mark — original artwork. Angular D aperture, red control
+       rails and one cold telemetry beam on an oxblood CRT field. -->
+  <rect width="512" height="512" fill="#080204"/>
+  <path d="M98 40 H414 L472 98 V414 L414 472 H98 L40 414 V98 Z" fill="none" stroke="#8B001C" stroke-width="6"/>
+  <path d="M40 156H68L82 142H126M386 370H430L444 356H472" fill="none" stroke="#FF173F" stroke-width="4"/>
+  <path d="M146 116H302L382 196V316L302 396H146Z" fill="#FF173F"/>
+  <path d="M208 180H278L320 222V290L278 332H208Z" fill="#140408"/>
+  <path d="M106 248H406V264H106Z" fill="#62DDE8"/>
+  <path d="M106 224H132V288H106ZM380 224H406V288H380Z" fill="#FF173F"/>
+  <rect x="238" y="238" width="36" height="36" fill="#EADDE0"/>
+  <path d="M249 244H263L268 249V263L263 268H249L244 263V249Z" fill="#FF173F"/>
+  <path d="M208 354H242V362H208ZM288 354H322V362H288Z" fill="#8B001C"/>
+  <path d="M248 354H282V362H248Z" fill="#FF173F"/>
 </svg>

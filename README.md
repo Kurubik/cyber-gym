@@ -88,6 +88,10 @@ cd mcp && npm ci && npm test             # MCP-мост
 
 ### Мобильные сборки
 
+Готовая тестовая сборка для Android: **[скачать Cyber Gym DAEMON APK](https://github.com/Kurubik/cyber-gym/releases/download/v0.1.0-daemon.1/CyberGym-0.1.0-daemon-debug.apk)**.
+Это debug-пакет `com.kurubik.cybergym.test`: он ставится отдельно и не перезаписывает
+будущую production-версию. Минимальная версия системы — Android 6.
+
 ```bash
 cd frontend
 npm run build:mobile                     # сборка + cap sync
