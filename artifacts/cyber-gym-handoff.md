@@ -129,8 +129,10 @@ reappears in the Russian pack or in visible markup.
 # Addendum — DAEMON CRT second theme (2026-09-25)
 
 Base revision: `fdfede109393b3715de3fee7025b6d662fe9b817` (`main`, clean, matched `origin/main`).
-This addendum travels in the commit that carries the change; its own SHA is reported alongside
-the push.
+This addendum travels in the commit that carries the change; it was pushed normally to `main`
+(no force) as **`b3afa07`** `Add DAEMON CRT as a second, opt-in theme` — a fast-forward from
+`fdfede1`, with local `HEAD`, `origin/main` and the remote ref equal afterwards and a clean
+tree. The addendum itself lands in the small follow-up commit that records this line.
 
 ## A. What changed
 
