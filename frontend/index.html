@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <title>Cyber Gym</title>
 <meta name="description" content="Дневник тренировок и веса тела: программы, подходы, рекорды, статистика и ИИ-тренер.">
-<meta name="theme-color" content="#04060D">
+<meta name="theme-color" content="#020407">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -17,6 +17,22 @@
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" href="icon-180.png">
+<!-- Set the theme before the first paint. The stylesheet's default is Blackwall, so a profile
+     that picked DAEMON CRT would flash the cyan skin for as long as the bundle takes to boot.
+     Inline (not a module) so it runs synchronously ahead of the app; it mirrors lib/theme.js —
+     only 'daemon' is not the default, anything else (legacy 'dark'/'light', a corrupt or
+     missing key) lands on Blackwall, and the app repaints from the same value once it is up. -->
+<script>
+(function () {
+  try {
+    var raw = localStorage.getItem('gym_state_v1');
+    var theme = raw && JSON.parse(raw).theme === 'daemon' ? 'daemon' : 'blackwall';
+    document.documentElement.dataset.theme = theme;
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.content = theme === 'daemon' ? '#080204' : '#020407';
+  } catch (e) {}
+})();
+</script>
 </head>
 <body>
 <div id="root"></div>

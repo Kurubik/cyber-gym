@@ -6,6 +6,7 @@ import { bindUI } from './components/ui.jsx'
 import { setWeightDecimals } from './lib/format.js'
 import { setLang, useLang } from './lib/i18n.js'
 import { setPlayOnSilent } from './lib/sound.js'
+import { applyTheme, isDaemon } from './lib/theme.js'
 import { setNav } from './lib/nav.js'
 import { initBackButton } from './lib/back.js'
 import { useWakeLock } from './lib/wakelock.js'
@@ -22,6 +23,7 @@ import Toast from './components/Toast.jsx'
 import SyncBanner from './components/SyncBanner.jsx'
 import RestTimer from './components/RestTimer.jsx'
 import TimerFlash from './components/TimerFlash.jsx'
+import CrtLayer from './components/CrtLayer.jsx'
 import Login from './views/Login.jsx'
 import MobileOnboarding from './views/MobileOnboarding.jsx'
 import Home from './views/Home.jsx'
@@ -44,14 +46,11 @@ const scrollPositions = new Map()
 
 bindUI(useUI)   // lets the shared controls open sheets without importing the store at module scope
 
-// Blackwall is dark-only: there is no theme or accent to resolve any more, and the
-// document is pinned so a stale stored preference cannot bring the old skin back.
-function applyPrefs() {
-  const de = document.documentElement
-  de.dataset.theme = 'dark'
-  const meta = document.querySelector('meta[name="theme-color"]')
-  if (meta) meta.content = '#020407'
-}
+// Two themes now: Blackwall (the default, and where every legacy value lands) and the opt-in
+// DAEMON CRT. applyTheme writes <html data-theme> plus the runtime theme-color, and is called
+// again whenever S.theme changes, so a switch is immediate and needs no reload. An inline
+// bootstrap in index.html sets the same attribute before first paint, so a daemon profile does
+// not flash the cyan skin on boot.
 
 function Shell() {
   const navigate = useNavigate()
@@ -65,7 +64,7 @@ function Shell() {
   const needsMobileOnboarding = useStore(s => s.needsMobileOnboarding)
   const langV = useLang()   // re-renders the whole shell when the language (pack) changes
   useEffect(() => { setNav(navigate) }, [navigate])
-  useEffect(() => { applyPrefs() }, [])
+  useEffect(() => { applyTheme(S.theme) }, [S.theme])
   useEffect(() => { setLang(S.lang || 'ru') }, [S.lang])
   // Same shape as the language: a module-level display setting, pushed when it changes (#139).
   useEffect(() => { setWeightDecimals(S.wdec) }, [S.wdec])
@@ -163,6 +162,7 @@ function Shell() {
       <Modals />
       <Toast />
       <TimerFlash />
+      <CrtLayer active={isDaemon(S.theme)} />
     </>
   )
 }

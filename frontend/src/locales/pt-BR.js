@@ -672,6 +672,13 @@ export const PT_BR_OVERRIDES = {
   'Download & Install': 'Baixar e instalar',
   'Starting download…': 'Iniciando download…',
   'Downloading update…': 'Baixando atualização…',
+
+  'Interface': 'Interface',
+  'BLACKWALL': 'BLACKWALL',
+  'DAEMON CRT': 'DAEMON CRT',
+  'Cyan Blackwall terminal — the default control-system skin.': 'Cyan Blackwall terminal — the default control-system skin.',
+  'Serious red CRT terminal: oxblood tube, red rails, sparse HUD.': 'Serious red CRT terminal: oxblood tube, red rails, sparse HUD.',
+  'Switching applies at once and syncs with your profile.': 'Switching applies at once and syncs with your profile.',
 }
 
 export default { ...pt, ...PT_BR_OVERRIDES, 

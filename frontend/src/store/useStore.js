@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { api, setRemoteAuth } from '../lib/api.js'
 import { localTZ } from '../lib/format.js'
 import { t } from '../lib/i18n.js'
+import { normalizeTheme } from '../lib/theme.js'
 import { registerCustom } from '../lib/exercises.js'
 import { DEMO, DEMO_SEEDED } from '../lib/demo.js'
 import { guestAllowed } from '../lib/guest.js'
@@ -22,7 +23,7 @@ const CHECK_MIN_MS = 3000    // rev checks closer together than this are the sam
 const POLL_MS = 30000        // while the app is open and signed in, ask the server for its revision this often
 export const DEF = {
   unit: 'kg', restSec: 90, restPauseSec: 15, sound: true, soundOnSilent: false, timerFlash: false, keepAwake: true, lang: 'ru',
-  theme: 'dark', accent: 'lime', body: 'male', targetW: null,
+  theme: 'blackwall', accent: 'lime', body: 'male', targetW: null,
   bodyweight: [], routines: [], week: {}, dayPlan: {},
   exWeights: {}, workouts: [], active: null, customEx: [], gifSize: 'full',
   // How the active workout is laid out — 'cards' (one exercise at a time with Prev/Next),
@@ -85,10 +86,20 @@ export const DEF = {
 }
 const clone = o => JSON.parse(JSON.stringify(o))
 
+// A profile written before the theme picker — or a backup imported from such a build — can
+// carry theme:'dark'/'light', an old accent-era value, or a string this build has never heard
+// of. Every path that reads state (local load, a pull, an adopted server copy, an import) and
+// every path that writes it funnels through here, so the in-memory value is always one of the
+// two current ids and a stale one is rewritten on the next save instead of lingering.
+const normalizeStateTheme = S => {
+  if (S && typeof S === 'object') S.theme = normalizeTheme(S.theme)
+  return S
+}
+
 function loadState() {
   try {
     const raw = localStorage.getItem(KEY)
-    if (raw) return Object.assign(clone(DEF), JSON.parse(raw))
+    if (raw) return normalizeStateTheme(Object.assign(clone(DEF), JSON.parse(raw)))
   } catch (e) { /* ignore */ }
   return clone(DEF)
 }
@@ -102,7 +113,7 @@ export function restoredStateFor(local, remote, dirty = false) {
   if (!remote || (hasData(local) && (dirty || (remote._ts || 0) < (local._ts || 0)))) return null
   const next = Object.assign(clone(DEF), remote)
   if (local.active) next.active = local.active
-  return next
+  return normalizeStateTheme(next)
 }
 
 export const useStore = create((set, get) => {
@@ -144,6 +155,7 @@ export const useStore = create((set, get) => {
   // change made on another device, and push it over that change.
   const persist = (S, push = true, stamp = true) => {
     if (stamp) S._ts = Date.now()
+    normalizeStateTheme(S)
     registerCustom(S.customEx)
     localStorage.setItem(KEY, JSON.stringify(S))
     set({ S })

@@ -1523,4 +1523,10 @@ export default {
   'minus 0.1': 'минус 0,1',
   'plus 0.1': 'плюс 0,1',
   'delete': 'удалить',
+  'Interface': 'Интерфейс',
+  'BLACKWALL': 'BLACKWALL',
+  'DAEMON CRT': 'DAEMON CRT',
+  'Cyan Blackwall terminal — the default control-system skin.': 'Циановая терминальная шкура Blackwall — по умолчанию.',
+  'Serious red CRT terminal: oxblood tube, red rails, sparse HUD.': 'Строгий красный CRT-терминал: бордовая трубка, красные рейлы, разреженный HUD.',
+  'Switching applies at once and syncs with your profile.': 'Переключение применяется сразу и синхронизируется с профилем.',
 }

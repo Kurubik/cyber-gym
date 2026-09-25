@@ -1471,7 +1471,12 @@ body::after{
   content:'';position:fixed;inset:0;pointer-events:none;z-index:1;
   background:repeating-linear-gradient(180deg,rgba(255,255,255,.014) 0 1px,transparent 1px 3px);
 }
-#app,#tabbar,#timer,#toast,.sheet,.modal-back{position:relative;z-index:2}
+#app{position:relative;z-index:2}
+/* The fixed chrome — the tab bar, the rest timer, the toast — and the bottom sheet already sit
+   above this layer on their own z-index. Naming them in the rule above forced them back into the
+   normal flow: the tab bar ended up at the end of the document (invisible until you scrolled to
+   the bottom) and every bottom sheet was anchored to the top of the screen. Only #app needs the
+   stacking fix, so only #app gets it. */
 
 /* mono telemetry labels: section titles, card titles, meta rows */
 h4.sec,.sect-t,.card h2,.ci-label,.l1,.l2,.l3,.l4,.adm-group-t,.sub,.lrow-s,.sect-f{
@@ -1586,4 +1591,244 @@ h4.sec,.sect-t,.card h2,.ci-label,.l1,.l2,.l3,.l4,.adm-group-t,.sub,.lrow-s,.sec
 .login-node{
   font-family:var(--font-mono);font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;
   color:var(--label-3);margin-bottom:26px;
+}
+
+/* ============================================================================
+   THEME: DAEMON CRT — the second skin (opt-in via data-theme="daemon")
+   ----------------------------------------------------------------------------
+   Not a red recolour of Blackwall. The composition is deliberately flatter and
+   sparser: near-black oxblood tube, red rails and separators, off-white body
+   copy, and cyan kept in reserve for measurement — charts, counters, completion
+   ticks and the live clock. Red owns structure and active system state.
+
+   Most of the reskin rides on the tokens above, so every primitive follows. The
+   rules below are exactly the places Blackwall hard-codes cyan, the places a
+   measured value should read cyan instead of red, and the instrument styling
+   that makes this a terminal rather than the same UI in another hue.
+   ========================================================================== */
+
+/* one chart default for both skins: Blackwall's accent, daemon's telemetry */
+:root{--chart:var(--acc)}
+
+:root[data-theme="daemon"]{
+  /* tube + surfaces — near-black oxblood */
+  --bg:#080204; --bg-2:#120407; --bg-el:#120407;
+  --surface:#150409; --surface-2:#1E070E; --surface-3:#290A13;
+
+  /* structure is red; measurement is cyan; amber is the warning */
+  --red-deep:#650014; --red:#A50022; --red-hot:#FF173F;
+  --cyan:#62DDE8; --tele:#62DDE8; --tele-2:#7DF6FF;
+  --magenta:#FF173F; --amber:#FFB000; --signal-ok:#35E08A; --signal-bad:#FF5A63;
+
+  /* text — cold off-white with a rose cast, muted mauve/steel below it */
+  --label:#F3E9EB; --label-2:rgba(240,219,224,.68); --label-3:rgba(228,200,209,.42); --label-4:rgba(216,188,198,.17);
+
+  /* lines — red rails */
+  --sep:rgba(255,23,63,.15); --sep-op:rgba(255,23,63,.09); --line:rgba(255,23,63,.30);
+
+  /* legacy palette names fold onto the same two hues — no magenta carnival */
+  --blue:var(--tele); --green:#35E08A; --red:var(--signal-bad); --orange:var(--amber);
+  --yellow:var(--amber); --teal:var(--tele); --indigo:#8E7BFF; --pink:#FF3A5E;
+  --purple:#B3001F; --mint:#4FE3C1; --brown:#B08A62; --grey:rgba(228,200,209,.58);
+
+  /* active system state is red; telemetry lives on --tele */
+  --acc:var(--red-hot); --acc-2:var(--red); --on-acc:#0B0203;
+  --acc-soft:color-mix(in srgb,var(--acc) 13%,transparent);
+  --acc-line:color-mix(in srgb,var(--acc) 38%,transparent);
+
+  --chart:var(--tele);
+  --shadow-panel:0 18px 40px -30px rgba(255,23,63,.5);
+
+  /* squarer, denser than Blackwall's 8px cut */
+  --cut:6px; --cut-lg:10px;
+  --track-cap:.16em;
+  color-scheme:dark;
+}
+
+/* ------------------------------------------------------------- tube ground -- */
+:root[data-theme="daemon"] body{
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(rgba(255,23,63,.028) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,23,63,.028) 1px,transparent 1px);
+  background-size:32px 32px,32px 32px;
+}
+/* the neutral scanline film is replaced by the dedicated CRT layer below */
+:root[data-theme="daemon"] body::after{display:none}
+
+/* ---------------------------------------------------- hard-coded cyan ---- */
+:root[data-theme="daemon"] .card::before,
+:root[data-theme="daemon"] .card::after{border-color:var(--acc);opacity:.55}
+:root[data-theme="daemon"] .modal-back,
+:root[data-theme="daemon"] .mback{background:rgba(8,2,4,.74)}
+:root[data-theme="daemon"] .login-mark{
+  color:var(--acc);border-color:var(--acc-line);
+  box-shadow:inset 0 0 32px -12px color-mix(in srgb,var(--acc) 62%,transparent),
+    0 18px 44px -30px color-mix(in srgb,var(--acc) 75%,transparent);
+}
+:root[data-theme="daemon"] .login-node{color:var(--label-3)}
+
+/* ------------------------------------------------ measurement is cyan ----- */
+/* heatmap + body map levels */
+:root[data-theme="daemon"] .hm-c.l1{background:color-mix(in srgb,var(--tele) 28%,var(--surface-2))}
+:root[data-theme="daemon"] .hm-c.l2{background:color-mix(in srgb,var(--tele) 52%,var(--surface-2))}
+:root[data-theme="daemon"] .hm-c.l3{background:color-mix(in srgb,var(--tele) 76%,var(--surface-2))}
+:root[data-theme="daemon"] .hm-c.l4{background:var(--tele)}
+:root[data-theme="daemon"] .hm-c.today{box-shadow:0 0 0 1.5px var(--tele)}
+:root[data-theme="daemon"] .bm-m.l1{fill:color-mix(in srgb,var(--tele) 30%,var(--bm-base))}
+:root[data-theme="daemon"] .bm-m.l2{fill:color-mix(in srgb,var(--tele) 54%,var(--bm-base))}
+:root[data-theme="daemon"] .bm-m.l3{fill:color-mix(in srgb,var(--tele) 76%,var(--bm-base))}
+:root[data-theme="daemon"] .bm-m.l4{fill:var(--tele)}
+/* progress + rest/work bars */
+:root[data-theme="daemon"] .mrow .bar i,
+:root[data-theme="daemon"] .wprog i,
+:root[data-theme="daemon"] #timer .bar i{background:var(--tele)}
+/* the live clock is a reading, not an alert */
+:root[data-theme="daemon"] #timer .t,
+:root[data-theme="daemon"] #timer.working .t{color:var(--tele-2)}
+/* completing a set / a day is confirmation, so it is cyan, not the red of an alert */
+:root[data-theme="daemon"] .chk.on,
+:root[data-theme="daemon"] .ck.on{background:var(--tele);color:#04181C;box-shadow:0 0 10px -2px color-mix(in srgb,var(--tele) 70%,transparent)}
+:root[data-theme="daemon"] .ck.on svg{stroke:#04181C}
+:root[data-theme="daemon"] .setrow.done .n{background:var(--tele);color:#04181C}
+:root[data-theme="daemon"] .setrow-side .setrow.side.done .sidetag{background:var(--tele);color:#04181C}
+:root[data-theme="daemon"] .wday .dot.done,
+:root[data-theme="daemon"] .cal-d i.done{background:var(--tele)}
+
+/* ------------------------------------------------------------ controls ---- */
+/* the primary button is an instrument: dark plate, red rail, cyan confirmation
+   only while it is pressed. The old solid accent slab is gone in this theme. */
+:root[data-theme="daemon"] .btn.primary{
+  background:color-mix(in srgb,var(--red-deep) 30%,var(--surface));
+  color:var(--label);border-color:var(--acc);
+}
+:root[data-theme="daemon"] .btn.primary:active{
+  background:color-mix(in srgb,var(--tele) 15%,var(--surface));
+  border-color:var(--tele);color:var(--tele-2);
+}
+:root[data-theme="daemon"] .btn.primary:focus-visible{border-color:var(--tele)}
+
+/* ----------------------------------------------------------- navigation --- */
+/* the bottom bar becomes an instrument rail; on desktop a system console
+   rather than a phone bar stretched across the window */
+:root[data-theme="daemon"] #tabbar{
+  background:color-mix(in srgb,var(--bg-el) 97%,transparent);
+  border-top:var(--hair) solid var(--acc-line);
+}
+:root[data-theme="daemon"] #tabbar button{letter-spacing:.14em}
+:root[data-theme="daemon"] #tabbar button.on{color:var(--acc);text-shadow:0 0 10px color-mix(in srgb,var(--acc) 62%,transparent)}
+:root[data-theme="daemon"] #tabbar button.start .cir{
+  background:color-mix(in srgb,var(--red-deep) 40%,var(--surface-2));
+  color:var(--label);border:1px solid var(--acc);
+  box-shadow:0 6px 18px -6px color-mix(in srgb,var(--acc) 55%,transparent);
+}
+:root[data-theme="daemon"] #tabbar button.start span{color:var(--acc)}
+:root[data-theme="daemon"] #tabbar button.start.rec .cir{background:var(--amber);color:#000;border-color:transparent}
+:root[data-theme="daemon"] #tabbar button.start.rec span{color:var(--amber)}
+@media (min-width:1000px){
+  :root[data-theme="daemon"] #tabbar{
+    width:640px;border-radius:2px;padding:8px 14px 10px;
+    border:var(--hair) solid var(--acc-line);
+  }
+}
+
+/* --------------------------------------------------------- typography ----- */
+/* labels and data lean on the mono face; long body copy stays on the UI face */
+:root[data-theme="daemon"] .lrow-v,
+:root[data-theme="daemon"] .sethead,
+:root[data-theme="daemon"] .setrow .n,
+:root[data-theme="daemon"] .setrow-side>.n,
+:root[data-theme="daemon"] .subn,
+:root[data-theme="daemon"] .today-row .lbl2,
+:root[data-theme="daemon"] .stp .num{font-family:var(--font-mono)}
+/* restrained red/cyan convergence on large display headings and numeric telemetry */
+:root[data-theme="daemon"] .hdr h1,
+:root[data-theme="daemon"] .card .big,
+:root[data-theme="daemon"] .tile .v,
+:root[data-theme="daemon"] .stat-v,
+:root[data-theme="daemon"] .bw-read,
+:root[data-theme="daemon"] #timer .t,
+:root[data-theme="daemon"] .wordmark{
+  text-shadow:-1px 0 rgba(255,23,63,.5),1px 0 rgba(98,221,232,.38);
+}
+
+/* ------------------------------------------------------------- CRT layer -- */
+/* fixed, pointer-transparent, active only in daemon (the component mounts with
+   the theme). No large blurs and no layout impact — paint only. */
+:root[data-theme="daemon"] .crt{
+  position:fixed;inset:0;z-index:45;pointer-events:none;overflow:hidden;contain:paint;
+}
+:root[data-theme="daemon"] .crt span{position:absolute;inset:0;display:block;pointer-events:none}
+:root[data-theme="daemon"] .crt-bloom{
+  background:radial-gradient(70% 46% at 50% 4%,rgba(255,23,63,.07),transparent 72%);
+  mix-blend-mode:screen;
+}
+:root[data-theme="daemon"] .crt-scan{
+  background:repeating-linear-gradient(180deg,rgba(0,0,0,.30) 0 1px,transparent 1px 3px);
+  mix-blend-mode:multiply;opacity:.5;
+}
+:root[data-theme="daemon"] .crt-vig{
+  background:radial-gradient(125% 105% at 50% 44%,transparent 48%,rgba(0,0,0,.5) 100%);
+}
+:root[data-theme="daemon"] .crt-roll{
+  inset:auto 0 auto 0;height:24vh;
+  background:linear-gradient(180deg,transparent,rgba(255,23,63,.05) 45%,rgba(255,96,120,.11) 78%,rgba(255,23,63,.05) 90%,transparent);
+  mix-blend-mode:screen;
+  animation:daemon-roll 8s linear infinite;
+}
+@keyframes daemon-roll{0%{transform:translateY(-28vh)}100%{transform:translateY(132vh)}}
+:root[data-theme="daemon"] .crt-tear{
+  inset:auto 0 auto 0;height:2px;opacity:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.5) 45%,rgba(98,221,232,.55) 55%,transparent);
+  animation:daemon-tear 13s steps(1,end) infinite;
+}
+@keyframes daemon-tear{
+  0%,95.6%{opacity:0;transform:translateY(0)}
+  96%{opacity:.5;transform:translateY(38vh)}
+  96.6%{opacity:.26;transform:translateY(41vh)}
+  97.2%,100%{opacity:0;transform:translateY(41vh)}
+}
+
+/* ------------------------------------------------------- timer flash ------ */
+/* the blink is independent of the selected theme — inverting the page rather
+   than swapping skins, so it reads the same in Blackwall and daemon */
+html[data-flash="on"] #app,
+html[data-flash="on"] #tabbar,
+html[data-flash="on"] #timer,
+html[data-flash="on"] #toast,
+html[data-flash="on"] #modal-root{filter:invert(1) hue-rotate(180deg)}
+
+/* ---------------------------------------------------- theme chooser ------- */
+.theme-choice{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px}
+.thm{
+  position:relative;display:flex;align-items:center;gap:10px;text-align:left;
+  padding:11px;min-height:78px;border-radius:var(--r-sm);
+  border:var(--hair) solid var(--line);background:var(--surface-2);
+  transition:border-color var(--fast),background var(--fast);
+}
+.thm:active{background:var(--surface-3)}
+.thm.on{border-color:var(--acc);background:var(--acc-soft)}
+.thm:focus-visible{outline:2.5px solid var(--acc);outline-offset:2px}
+/* the swatch is a fixed miniature of each skin — it does not follow the active
+   theme, so the two choices are always comparable side by side */
+.thm-prev{width:40px;height:40px;flex:none;position:relative;overflow:hidden;border-radius:3px;border:var(--hair) solid var(--line);background:#050810}
+.thm-prev i{position:absolute;display:block;font-style:normal}
+.thm-prev .thm-rail{left:0;top:0;bottom:0;width:5px;background:linear-gradient(180deg,#A50022,#650014)}
+.thm-prev .thm-chip{left:11px;top:11px;width:20px;height:5px;background:#00E5FF}
+.thm-prev .thm-dot{left:11px;top:23px;width:13px;height:3px;background:rgba(0,229,255,.5)}
+.thm-prev.daemon{background:#080204}
+.thm-prev.daemon .thm-rail{background:linear-gradient(180deg,#FF173F,#650014)}
+.thm-prev.daemon .thm-chip{background:#F3E9EB}
+.thm-prev.daemon .thm-dot{background:#62DDE8}
+.thm-txt{min-width:0;display:flex;flex-direction:column;gap:3px;overflow-wrap:break-word}
+.thm-name{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;color:var(--label)}
+.thm-desc{font-size:12px;line-height:1.3;color:var(--label-2)}
+.thm-check{position:absolute;top:8px;right:8px;font-size:14px;color:var(--acc);opacity:0;transition:opacity var(--fast)}
+.thm.on .thm-check{opacity:1}
+@media (max-width:359px){.theme-choice{grid-template-columns:1fr}}
+
+/* ------------------------------------------------ daemon reduced motion -- */
+@media (prefers-reduced-motion: reduce){
+  :root[data-theme="daemon"] .crt .crt-roll,
+  :root[data-theme="daemon"] .crt .crt-tear{display:none}
 }

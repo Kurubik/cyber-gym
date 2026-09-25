@@ -11,6 +11,7 @@ import { api, webauthnOK, passkeyLogin, passkeyRegister, IS_ANDROID } from '../l
 import { pushSupported, enablePush, disablePush, sendTestPush, syncPushSubscription } from '../lib/push.js'
 import { wakeLockSupported } from '../lib/wakelock.js'
 import { t } from '../lib/i18n.js'
+import { THEMES, normalizeTheme } from '../lib/theme.js'
 import { DEMO, REPO } from '../lib/demo.js'
 import { MOBILE, isAndroid, shareExport, syncReminder } from '../lib/mobile.js'
 import { checkForUpdate, downloadAndInstall } from '../lib/update.js'
@@ -19,6 +20,47 @@ import { ConnectSheet } from './MobileOnboarding.jsx'
 import { starterPlanSheet, confirmSheet, importFromApp, importFromHevy, equipmentProfileSheet, menuSheet, askAddDeviceData } from '../sheets.jsx'
 import Icon from '../components/Icon.jsx'
 import { Section, Row, SelectRow, Switch, Segmented, Button, TextField } from '../components/ui.jsx'
+
+// The theme picker: one preview card per theme, exposed as a radiogroup. The selected card is
+// the single tab stop and the arrow keys move the choice, which is what a radio group implies
+// to assistive tech; Enter/Space and a tap both select. Switching is a plain store update, so
+// the shell repaints in place — no reload, no re-mount, no lost scroll position.
+function ThemeChooser({ value, onChange }) {
+  const cur = normalizeTheme(value)
+  const refs = useRef([])
+  const move = (from, dir) => {
+    const i = (from + dir + THEMES.length) % THEMES.length
+    onChange(THEMES[i].value)
+    refs.current[i]?.focus()
+  }
+  return (
+    <div className="theme-choice" role="radiogroup" aria-label={t('Theme')}>
+      {THEMES.map((o, i) => {
+        const on = cur === o.value
+        return (
+          <button key={o.value} type="button" role="radio" aria-checked={on}
+            tabIndex={on ? 0 : -1}
+            ref={el => { refs.current[i] = el }}
+            className={'thm' + (on ? ' on' : '')}
+            onClick={() => onChange(o.value)}
+            onKeyDown={e => {
+              if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); move(i, 1) }
+              else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); move(i, -1) }
+            }}>
+            <span className={'thm-prev ' + o.value} aria-hidden="true">
+              <i className="thm-rail" /><i className="thm-chip" /><i className="thm-dot" />
+            </span>
+            <span className="thm-txt">
+              <span className="thm-name">{o.name}</span>
+              <span className="thm-desc">{t(o.descKey)}</span>
+            </span>
+            <Icon name="check" className="thm-check" />
+          </button>
+        )
+      })}
+    </div>
+  )
+}
 
 export default function Settings() {
   const nav = useNavigate()
@@ -339,8 +381,15 @@ export default function Settings() {
     {/* ---------- equipment ---------- */}
     <EquipmentCard S={S} update={update} />
 
+    {/* ---------- interface: the theme picker ---------- */}
+    {/* Two preview cards, not a dropdown: the palette and texture are the point, so you see
+        them before you commit. Blackwall is the default; DAEMON CRT is the red terminal. */}
+    <Section title={t('Interface')} footer={t('Switching applies at once and syncs with your profile.')}>
+      <ThemeChooser value={S.theme} onChange={v => update(s => { s.theme = v })} />
+    </Section>
+
     {/* ---------- appearance ---------- */}
-    <Section title={t('Appearance')} footer={t('Blackwall is dark-only — one control-system skin, everywhere.')}>
+    <Section title={t('Appearance')}>
       {/* Purely how the muscle map is drawn — nothing else in the app reads this. */}
       <Row icon="figureStrength" iconTint="var(--teal)" title={t('Body diagram')}>
         <Segmented

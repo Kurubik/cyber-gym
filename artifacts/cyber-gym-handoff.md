@@ -123,3 +123,116 @@ reappears in the Russian pack or in visible markup.
   `playwright-core` is resolved from the host install, not added as a dependency.
 - The AI Coach now instructs the provider to write human-readable fields in Russian; that
   instruction was not exercised against a live provider here.
+
+---
+
+# Addendum — DAEMON CRT second theme (2026-09-25)
+
+Base revision: `fdfede109393b3715de3fee7025b6d662fe9b817` (`main`, clean, matched `origin/main`).
+This addendum travels in the commit that carries the change; its own SHA is reported alongside
+the push.
+
+## A. What changed
+
+A second, opt-in theme. Blackwall (cyan) stays the default and keeps every legacy value; the new
+**DAEMON CRT** is a deliberately distinct red terminal skin, not a hue swap.
+
+- Theme ids: `blackwall` (default) and `daemon`; `dark`, `light`, unknown strings, `null` and a
+  missing key all normalize to `blackwall` (profile, backup import and server pull alike).
+- Tokens are overridden under `:root[data-theme="daemon"]`: near-black oxblood tube
+  (`#080204`/`#120407`), red structure (`#650014`/`#A50022`/`#FF173F`), off-white rose-tinted body
+  copy, mauve/steel muted text, restrained cyan (`#62DDE8`/`#7DF6FF`) reserved for measurement —
+  charts, heatmap, body map, progress bars, the live timer clock and set/day completion ticks —
+  and amber for warning. Red owns borders, rails, separators, focus traces and active state.
+- DAEMON controls read as instruments: `.btn.primary` is a dark plate with a red rail (the cyan
+  slab is gone) and a cyan confirmation state on press; the bottom bar is an instrument rail and
+  the desktop bar a wider console rail; labels/data lean on JetBrains Mono while body copy stays
+  on IBM Plex Sans.
+- A reusable, pointer-transparent CRT layer (`frontend/src/components/CrtLayer.jsx` + the `crt-*`
+  CSS) mounts only for daemon: fine scanlines, a tube vignette, restrained phosphor bloom, a slow
+  red roll band, a rare tear (idle 95.6% of a 13 s cycle) and a red/cyan convergence split on
+  large headings and numeric telemetry. No large blurs; `contain:paint`, no layout impact.
+- Settings gains an **Интерфейс** section with an accessible preview-card radio group
+  (`role=radiogroup`/`role=radio`, roving tabindex, arrow-key selection, ≥78 px cards, Russian
+  copy). Switching is immediate, no reload, scroll position kept.
+- `document.documentElement.dataset.theme` and `<meta name="theme-color">` follow `S.theme`
+  reactively; an inline bootstrap in `frontend/index.html` sets both before first paint so a daemon
+  profile never flashes the cyan skin (no CSP relaxation — the template ships only
+  `frame-ancestors`).
+- `frontend/src/components/TimerFlash.jsx` no longer flips `data-theme`; the timer blink is a
+  theme-independent `data-flash` invert, so it reads the same in either skin.
+
+### Changed paths
+
+- New: `frontend/src/lib/theme.js`, `frontend/src/components/CrtLayer.jsx`,
+  `frontend/src/lib/theme.test.js`, `frontend/src/lib/theme-css.test.js`,
+  `frontend/src/store/useStore.theme.test.jsx`, `frontend/src/views/Settings.theme.test.jsx`,
+  `assets/screenshots/daemon-*.png` (and the new `*-320`/`*-empty`/`*-sheet`/`*-reduced-motion`
+  captures).
+- Modified: `frontend/index.html`, `frontend/src/App.jsx`, `frontend/src/index.css`,
+  `frontend/src/store/useStore.js`, `frontend/src/views/Settings.jsx`,
+  `frontend/src/components/TimerFlash.jsx`, `frontend/src/components/LineChart.jsx` (default chart
+  colour moved onto the new `--chart` token), all 14 `frontend/src/locales/*.js`,
+  `frontend/src/lib/pt-br-locale.test.js`, `scripts/capture-screenshots.mjs`.
+
+### Pre-existing layout bug fixed (outside the theme, affecting both skins)
+
+`frontend/src/index.css` grouped `#app,#tabbar,#timer,#toast,.sheet,.modal-back` under
+`{position:relative;z-index:2}`. For `#app` that is correct; for the others it overturned their
+own `position:fixed`/`absolute`, which put the tab bar at the **end of the document** (off-screen
+on any long page), pinned the rest timer and toast into the flow, and anchored every bottom sheet
+to the **top** of the screen. Verified in the built app before the fix (`#tabbar` computed
+`position:relative`, rect `y:3452` at a 844 px viewport; `.sheet` at `y:0`). The rule is now
+`#app{position:relative;z-index:2}` only. The theme work made this impossible to leave alone — an
+“instrument rail” that lives 3 400 px down the page is not a bottom navigation and cannot be
+shown in a screenshot. Flagged here because it visibly changes Blackwall on long pages and in
+sheets; if that trade is unwanted, revert that single line.
+
+## B. Verification (all on the built artifact)
+
+Baseline before editing: `cd frontend && npm test` → **127 files / 1586 tests passed, exit 0**.
+
+| Check | Command | Result |
+|---|---|---|
+| Frontend tests | `cd frontend && npm test` | **131 files / 1611 tests passed, exit 0** (4 new files / 25 new tests) |
+| Locale parity | `node scripts/check-locales.mjs` | **14 locales × 1579 keys, in sync, exit 0** |
+| t() coverage (strict) | `node scripts/check-source-strings.mjs --strict` | **1274 strings, all defined, exit 0** |
+| Production build | `cd frontend && npm run build` | **exit 0**; bootstrap preserved in `dist/index.html` |
+| Fatigue probe | `npm run test:fatigue-probe` | **exit 0** (108 000 comparisons, PASS) |
+| Compose config | `docker compose config -q` | **exit 0** with a `.env` (copied from `.env.example`, then removed); exit 1 without one, because the file declares `env_file: .env` — environmental, not a config error |
+| SW cache invalidation | build stamps | `cybergym-rt-66b7140bb1` → `…ecdd1db279` → `…eebbe01daf` → `cybergym-rt-c50d3a1700` across the rebuilds; no `__BUILD__` left |
+| Browser verification | `node scripts/capture-screenshots.mjs` | **49 screenshots, 0 console errors**, 138 expected exercise-media 404s |
+| Boot theme | capture, both themes × {390,1440} | blackwall → `data-theme=blackwall`, meta `#020407`, no CRT; daemon → `data-theme=daemon`, meta `#080204`, CRT present |
+| Live switch | capture (mobile) | theme + meta follow a click immediately, `aria-checked` flips, scroll `700 → 700`, selection restores |
+| Overflow | capture, 390/1440 all routes + 320 subset ×2 themes (36 checks) | **0 offenders** |
+| Reduced motion | capture (`reducedMotion:'reduce'`) | roll + tear hidden, scanlines/vignette still painted, theme still daemon, app animation `1e-06s` |
+| Fonts | capture, both themes | IBM Plex Sans + JetBrains Mono loaded; Cyrillic renders in **both** (incl. the mono face) |
+| PWA | capture | worker registers, cache `cybergym-rt-c50d3a1700`, 11 entries incl. 4 `.woff2`; manifest unchanged (`theme #04060D`, 3 icons) |
+
+### Screenshots
+
+`assets/screenshots/`, both themes from the same seeded profile: `daemon-login-{390,1440}`,
+`daemon-home-{390,1440}`, `daemon-plan-*`, `daemon-workout-*` (active) and
+`daemon-workout-empty-*`, `daemon-stats-*`, `daemon-library-*`, `daemon-muscles-*`,
+`daemon-history-*`, `daemon-settings-*`, `daemon-sheet-*`, `daemon-theme-320`,
+`daemon-reduced-motion-390`; the Blackwall regression set is the unprefixed names
+(`home-390`, `settings-390`, `stats-1440`, `workout-390`, `theme-320`, …), refreshed in the same
+run. Pixels were inspected: daemon reads as a sparse oxblood terminal (red rails, off-white copy,
+cyan only on charts/heatmap/body map/completion), not a recoloured Blackwall; Blackwall is
+unchanged.
+
+## C. Honest limitations
+
+- **Native packaging was not rebuilt.** This is a CSS/state-only web change: no Capacitor config,
+  native assets or plugins were touched, so no `cap sync`/Gradle/Xcode run. On device the theme is
+  WebView-rendered; the Android/iOS build identity from §6 is unaffected. Android/iOS visual
+  verification is therefore **not** claimed.
+- The pre-existing positioning fix (A) changes Blackwall's rendered layout as well; see the note.
+- Exercise media is still absent from the repository, so the capture logs 138 `/img/*`,`/gif/*`
+  404s and the screenshots show placeholder tiles.
+- The 13 non-Russian locale packs carry the six new strings as English fallbacks (parity tooling
+  only); Russian is the only visible language.
+- The `data-flash` timer blink and the CRT bloom were not captured mid-blink; only the static
+  daemon and the reduced-motion daemon are screenshotted.
+- `sw.js` registers on `https:` only (upstream rule), so the local probe registered it explicitly
+  before reading the cache — same caveat as §8.

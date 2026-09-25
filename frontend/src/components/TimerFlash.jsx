@@ -1,21 +1,23 @@
 import { useEffect } from 'react'
 import { useUI } from '../store/useUI.js'
 
-// Flips the app's real light/dark theme on and off twice (~2.4s) instead of laying an
-// opaque black/white rectangle over the screen — the alert reads as the app itself
-// blinking, and it always settles back on whatever theme the user actually had.
+// Blinks the whole app instead of laying an opaque black/white rectangle over the screen — the
+// alert reads as the app itself flashing. It used to flip data-theme between dark and light,
+// which was fine while there was one skin; now that a real second theme exists, flipping the
+// theme would momentarily repaint the app in the other skin. The blink is therefore a dedicated
+// transient attribute the stylesheet inverts off, independent of which theme is selected.
 export default function TimerFlash() {
   const id = useUI(s => s.timerFlashId)
   useEffect(() => {
     if (!id) return
     const de = document.documentElement
-    const original = de.dataset.theme
-    const opposite = original === 'light' ? 'dark' : 'light'
-    const steps = [opposite, original, opposite, original]
-    const timers = steps.map((theme, i) => setTimeout(() => { de.dataset.theme = theme }, i * 600))
+    const show = () => de.setAttribute('data-flash', 'on')
+    const hide = () => de.removeAttribute('data-flash')
+    const steps = [show, hide, show, hide]
+    const timers = steps.map((fn, i) => setTimeout(fn, i * 600))
     return () => {
       timers.forEach(clearTimeout)
-      de.dataset.theme = original
+      hide()
     }
   }, [id])
   return null
